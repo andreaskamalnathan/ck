@@ -1,0 +1,208 @@
+#:kivy 1.0.4
+
+
+<ScreenMain>:
+    id:classes
+    
+    BoxLayout:
+        orientation:'vertical'
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint_y:None
+            height:42
+            
+            Spinner:
+                id:class_spinner
+                text: "Home"
+                values: ('Home', 'SD 2a Maths', 'SD 2b Maths', 'SD 2c Maths')
+                size_hint_y: None
+                height: '48dp'
+                on_text:root.class_selected()
+                
+            Widget:
+            Button:
+                size_hint_x:None
+                width:42
+                text:'...'
+                on_press:root.manager.current = 'ScreenLogin'
+                
+        ScrollView:
+            padding:5
+            size_hint: (1, 1)
+
+            GridLayout:
+                id:student_list
+                cols:1
+                orientation:'vertical'
+                #spacing:1
+                size_hint_y:None
+                
+        
+            
+
+<ScreenStudentDetails>:
+    id:details_grid
+    BoxLayout:
+        
+        orientation:'vertical'
+        BoxLayout:
+            #orientation:'horizontal'
+            size_hint:(1, None)
+            height: 42
+            Button:
+                size_hint:(None, None)
+                size:(42,42)
+                text:'<'
+                on_release: root.manager.current = 'ScreenMain'
+            Label:
+                id:studentname_label
+                text:"The Student's Name"
+            Widget:
+            Button:
+                size_hint:(None, None)
+                size:(42,42)
+                text:'...'
+                on_release: root.manager.current = 'ScreenAction'
+            
+        GridLayout:
+            padding:5
+            spacing:5
+            row_default_height:42
+            row_force_default:True
+            id:details_grid
+            cols:2
+
+<ScreenTag>:
+    id:screen_tag
+    BoxLayout:
+        Label:
+            id:studentname_label
+            text:'ScreenTagStudents'
+        Widget:
+        Button:
+            size_hint:(1,None)
+            height:50
+            text:'Send'
+            on_release: root.manager.current = 'ScreenStudentDetails'
+            
+<ScreenAction>:
+    id:screen_action
+    BoxLayout:
+        Label:
+            id:studentname_label
+            text:'ScreenAction'
+        Widget:
+        Button:
+            size_hint:(1,None)
+            height:50
+            text:'Next'
+            on_release: root.manager.current = 'ScreenTag'
+
+
+<ScreenAttend>:
+    id:screen_attend
+    BoxLayout:
+        orientation:'vertical'
+        BoxLayout:
+            size_hint:(1, None)
+            orientation:'horizontal'
+            height:42
+            
+            Button:
+                size_hint:(None, None)
+                size:(42,42)
+                text:'X'
+                on_release: root.manager.current = 'ScreenStudentDetails'
+            Label:
+                text:'student name'
+        Widget:
+            size_hint:(1,1)
+        GridLayout:
+            size_hint:(1,1)
+            cols:2
+            row_default_height:42
+            row_force_default:True
+
+            Label:
+                id:student_in_school
+                text: 'In attendance'
+            Switch:
+                active: True
+
+                
+        Widget:
+            size_hint:(1,1)
+
+        Button:
+            size_hint:(1,None)
+            height:50
+            text:'Enter'
+            on_release: root.manager.current = 'ScreenStudentDetails'
+
+<StudentListItemButton>:
+    wid: self.wid
+    image: self.image
+    title: self.title
+    label: self.label
+    on_press: self.click()
+    BoxLayout:
+        orientation: "horizontal"
+        size: self.parent.size      # match the button's size
+        pos: self.parent.pos        # match the button's position
+        padding: 5   
+        spacing: 10
+
+        Image:
+            size_hint: None, 1
+            source: root.image
+            size: 64, 64
+            valign: "middle"
+
+
+        Label:
+            size_hint: None, 1
+            text: root.label
+            valign: "middle"
+            size: 400, 64
+            text_size: self.size
+
+<ScreenLogin>:
+    BoxLayout:
+        orientation: "vertical"
+        Button:
+            text:'X'
+            size_hint:(None,None)
+            size:(42,42)
+            on_release: root.manager.current = 'ScreenMain'
+        Widget:
+            size_hint:(None,1)
+        GridLayout:
+            padding:5
+            spacing:5
+            row_default_height:42
+            row_force_default:True
+            cols:2
+            
+            Label:
+                text:'User'
+                size_hint:(1,1)
+            TextInput:
+                size_hint:(2,1)
+                id:email_input
+         
+            Label:
+                text:'Password'
+            TextInput:
+                size_hint:(2,1)
+                id:password_input
+           
+
+            Label:
+                text:' '
+            Button:
+                text:'Enter'
+                size_hint:(1,1)
+                on_press: root.login()
+                
+        Widget:
+            size_hint:(None,2)
