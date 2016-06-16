@@ -195,6 +195,7 @@
             TextInput:
                 size_hint:(2,1)
                 id:password_input
+				password: True
            
 
             Label:
@@ -206,3 +207,10 @@
                 
         Widget:
             size_hint:(None,2)
+<CustomPopup>:
+    size_hint: 1, .5
+    auto_dismiss: False
+    title: 'Warning!'
+    Button:
+        text: 'Wrong Password, Please Correct the password!'
+        on_press: root.dismiss()
