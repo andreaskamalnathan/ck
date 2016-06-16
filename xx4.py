@@ -25,6 +25,7 @@ from functools import partial
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import User
+from plyer import camera
 
 try:
     engine = create_engine('mysql://root:password@localhost/ckdb', echo=True)
@@ -169,7 +170,12 @@ class ScreenTag(Screen):
     pass
 
 class ScreenAction(Screen):
-    pass
+    def takepicture(self):
+        camera.take_picture('/storage/sdcard0/example.jpg', self.done)
+
+    def done(self, e): #receive e as the image location
+        self.lblCam.text = e #update the label to the image location
+    #pass
 
 
 class ScreenStudentDetails(Screen):
