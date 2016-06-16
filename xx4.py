@@ -5,18 +5,6 @@ from kivy.config import Config
 Config.set('graphics', 'width', '400')
 Config.set('graphics', 'height', '700')
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import User
-
-try:
-    engine = create_engine('mysql://root:password@localhost/ckdb', echo=True)
-    DBSession = sessionmaker()
-    DBSession.configure(bind=engine)
-    sessionn = DBSession()
-except:
-    print ' no connection'
-
 from kivy.app import App
 from kivy.uix.screenmanager import Screen, ScreenManager 
 from kivy.uix.boxlayout import BoxLayout
@@ -32,16 +20,20 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.settings import (Settings, SettingsWithSidebar,
                                SettingsWithSpinner,
                                SettingsWithTabbedPanel)
-
-
 from kivy.uix.popup import Popup
-
 from functools import partial
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import User
 
 try:
-    from models import user
+    engine = create_engine('mysql://root:password@localhost/ckdb', echo=True)
+    DBSession = sessionmaker()
+    DBSession.configure(bind=engine)
+    session = DBSession()
 except:
-    pass
+    print ' no connection'
+
 
 student_list = [
     ("0", "fruit_images/Apple.64.jpg","Apple","Apple: Super Sweet"),
@@ -119,13 +111,24 @@ class ScreenMain(Screen):
             btn.bind(on_press=partial(self.changer2, txt))
         student_list.bind(minimum_height=student_list.setter('height'))
     
+class CustomPopup(Popup):
+    pass
 
 class ScreenLogin(Screen):
 
     def __init__(self,**kwargs):
         super (ScreenLogin,self).__init__(**kwargs)
+    def popupwrong_password(self):
+        #popup = Popup(title = "Warning!!", 
+        #        content = Label(text = "Wrong Password, Please Correct the password!"), 
+        #        size = (200,200), 
+        #        size_hint=(None, None),
+        #        auto_dismiss=True)
+        p = CustomPopup()
+        p.open()
 
     def login(self, *args):
+        
         email_input = self.ids.email_input
         user_email = email_input.text
 
@@ -134,7 +137,8 @@ class ScreenLogin(Screen):
 
         for a in session.query(User).filter(User.email == user_email):
             if a.password != password:
-                print "Wrong Password"
+                #pint "Wrong Password"
+                self.popupwrong_password()
                 email_input.text = ''
                 password_input.text = ''
                 return
