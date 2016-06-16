@@ -13,5 +13,12 @@ class User(Base):
     user_id = Column(String(11), nullable=True)
     telp = Column(String(45), nullable=True)
     privilages = Column(String(45), nullable=True)
-    engine = create_engine('mysql://root:password@localhost/ckdb', encoding='latin8', echo=True)
-    Base.metadata.create_all(engine)
+
+    try:
+        engine = create_engine('mysql://root:password@localhost/ckdb', encoding='latin8', echo=True)
+    except:
+        try:
+            engine = create_engine('mysql://root:andrewroot@localhost/ckdb', encoding='latin8', echo=True)    
+        except:
+            print "can't login"
+        Base.metadata.create_all(engine)
